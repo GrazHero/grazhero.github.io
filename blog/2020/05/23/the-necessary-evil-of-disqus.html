@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>The Necessary Evil of Disqus</title>
+    <meta name="description" content="In the process of setting this blog up, I've decided that reader interaction is something I'd like to have....">
+    <meta name="author"      content="Graz">
+    <meta name="keywords"    content="meta, webdev">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/favicon.ico">
+    <link rel="canonical" href="http://graz.fortlogic.net/blog/2020/05/23/the-necessary-evil-of-disqus.html">
+    <link rel="next" href="/blog/2020/05/23/let-s-try-doing-a-blog.html">
+    <link rel="prev" href="/blog/2020/05/23/color-scheme-frustration.html">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/feeds/all.rss.xml" title="RSS Feed">
+    <!-- JS -->
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-167435229-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+
+    <!-- A standard Twitter Bootstrap nav bar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="container">
+
+      <a href="/index.html" class="navbar-brand">Graz's Blog</a>
+
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+              data-target="#navbar_collapse" aria-controls="navbar_collapse"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbar_collapse">
+          <ul class="navbar-nav mr-auto">
+
+
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                Tags <b class="caret"></b>
+              </a>
+
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/tags/ads.html">ads</a><a class="dropdown-item" href="/tags/discussion.html">discussion</a><a class="dropdown-item" href="/tags/hardware.html">hardware</a><a class="dropdown-item" href="/tags/internet.html">internet</a><a class="dropdown-item" href="/tags/meta.html">meta</a><a class="dropdown-item" href="/tags/society.html">society</a><a class="dropdown-item" href="/tags/software.html">software</a><a class="dropdown-item" href="/tags/unix.html">unix</a><a class="dropdown-item" href="/tags/webdev.html">webdev</a>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                Games <b class="caret"></b>
+              </a>
+
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/snake.html">Snake</a>
+              </div>
+            </li>
+
+            <li>
+              <a class="nav-link" href="/About.html">About</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link" href="/feeds/all.atom.xml">Atom</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/feeds/all.rss.xml">RSS</a>
+            </li>
+          </ul>
+      </div>
+
+      </div>
+    </nav>
+
+
+    <div class="container">
+      <div class="row">
+
+        <!-- Main column -->
+        <div id="content" class="col-md-12">
+
+
+
+
+
+          <article>
+  <header>
+    <h1>The Necessary Evil of Disqus</h1>
+    <p class='date-and-tags'>
+<time datetime="2020-05-23" pubdate="true">2020-05-23</time> :: <span class="tags"><a href="/tags/meta.html">meta</a>, <a href="/tags/webdev.html">webdev</a></span></p>
+    <p class='authors'>By: <span class="authors">Graz</span></p>
+  </header>
+
+<p>In the process of setting this blog up, I&rsquo;ve decided that reader interaction is something I&rsquo;d like to have.</p>
+<!-- more-->
+
+<p>The easy route would be to just leave my email contact information for anyone who has any comments. This option has a few drawbacks though:</p>
+
+<ul>
+ <li>I feel like the number of people potentially willing to go to the trouble to send me an email isn&rsquo;t as large as that of people willing to leave their thoughts in an embedded comment section.</li>
+ <li>I feel there can be a lot of value in having an open forum for discussion. Having comments be relegated to a two-way email thread means missing out on some potentially interesting points of view.</li></ul>
+
+<p>So I began to think of how best to integrate a comment section into my blog, which is built with a static site generator. For the time being, I&rsquo;ve settled on the immensely popular Disqus. The ease of setting it up was intriguing. But it&rsquo;s not without some glaring drawbacks of its own, which make me hesitant to consider this a permanent solution:</p>
+
+<ul>
+ <li>Loading external Javascript makes me very uncomfortable.</li>
+ <li><a href="https://help.disqus.com/en/articles/1717103-disqus-privacy-policy">Disqus&rsquo; Privacy Policy</a> is the stuff of nightmares</li></ul>
+
+<p>So obviously it&rsquo;s far from ideal. I encourage any readers who are uncomfortable with Disqus to block their scripts.</p>
+
+<p>I want comments though, so screw it.</p>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://graz.fortlogic.net/blog/2020/05/23/the-necessary-evil-of-disqus.html"
+       data-dnt="true">
+      "Tweet"</a>
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.identifier = undefined;
+        this.page.url = undefined;
+        this.page.title = undefined;
+        this.page.category_id = undefined;
+      };
+      var disqus_shortname = 'graz-fortlogic-net';
+      (function() {
+          var dsq = document.createElement('script');
+          dsq.type = 'text/javascript';
+          dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.setAttribute('data-timestamp', +new Date());
+          (document.head || document.body).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+      Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+    <div class="row justify-content-center">
+      <nav aria-label="Page Navigation">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="/blog/2020/05/23/let-s-try-doing-a-blog.html"
+               aria-label="Previous">
+              <span aria-hidden="true">&larr; Let&rsquo;s Try Doing a Blog</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="/blog/2020/05/23/color-scheme-frustration.html"
+               aria-label="Next">
+              <span aria-hidden="true">Color Scheme Frustration &rarr;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+</article>
+        </div>
+      </div>
+      <footer>
+        <hr />
+        <p>Site generated
+        by <a href="https://github.com/greghendershott/frog">Frog</a>,
+        the <strong>fr</strong>ozen bl<strong>og</strong> tool.</p>
+        <p>Using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+      </footer>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="/js/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

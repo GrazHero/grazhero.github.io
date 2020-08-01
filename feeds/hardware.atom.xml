@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">Graz's Blog: Posts tagged 'hardware'</title>
+ <link rel="self" href="http://graz.fortlogic.net/feeds/hardware.atom.xml" />
+ <link href="http://graz.fortlogic.net/tags/hardware.html" />
+ <id>urn:http-graz-fortlogic-net:-tags-hardware-html</id>
+ <updated>2020-06-21T09:22:14Z</updated>
+ <entry>
+  <title type="text">Bootable, Incremental, External BTRFS Backup</title>
+  <link rel="alternate" href="http://graz.fortlogic.net/blog/2020/06/21/bootable-incremental-external-btrfs-backup.html?utm_source=hardware&amp;utm_medium=Atom" />
+  <id>urn:http-graz-fortlogic-net:-blog-2020-06-21-bootable-incremental-external-btrfs-backup-html</id>
+  <published>2020-06-21T09:22:14Z</published>
+  <updated>2020-06-21T09:22:14Z</updated>
+  <author>
+   <name>Graz</name></author>
+  <content type="html">
+&lt;p&gt;For a while I&amp;rsquo;ve wanted to have a way for making bootable backups of my BTRFS-on-LVM-on-LUKS system to an external drive. There are several programs which use the snapshot system of BTRFS to streamline the process of making backups, but none of them seemed flexible enough. So I went about putting together a little system that&amp;rsquo;s tailored to my personal setup.&lt;/p&gt;&lt;a href="http://graz.fortlogic.net/blog/2020/06/21/bootable-incremental-external-btrfs-backup.html?utm_source=hardware&amp;amp;utm_medium=Atom"&gt;&lt;em&gt;More&amp;hellip;&lt;/em&gt;&lt;/a&gt;</content></entry></feed>

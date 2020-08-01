@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">Graz's Blog: Posts tagged 'meta'</title>
+ <link rel="self" href="http://graz.fortlogic.net/feeds/meta.atom.xml" />
+ <link href="http://graz.fortlogic.net/tags/meta.html" />
+ <id>urn:http-graz-fortlogic-net:-tags-meta-html</id>
+ <updated>2020-05-23T22:26:44Z</updated>
+ <entry>
+  <title type="text">The Necessary Evil of Disqus</title>
+  <link rel="alternate" href="http://graz.fortlogic.net/blog/2020/05/23/the-necessary-evil-of-disqus.html?utm_source=meta&amp;utm_medium=Atom" />
+  <id>urn:http-graz-fortlogic-net:-blog-2020-05-23-the-necessary-evil-of-disqus-html</id>
+  <published>2020-05-23T22:26:44Z</published>
+  <updated>2020-05-23T22:26:44Z</updated>
+  <author>
+   <name>Graz</name></author>
+  <content type="html">
+&lt;p&gt;In the process of setting this blog up, I&amp;rsquo;ve decided that reader interaction is something I&amp;rsquo;d like to have.&lt;/p&gt;&lt;a href="http://graz.fortlogic.net/blog/2020/05/23/the-necessary-evil-of-disqus.html?utm_source=meta&amp;amp;utm_medium=Atom"&gt;&lt;em&gt;More&amp;hellip;&lt;/em&gt;&lt;/a&gt;</content></entry>
+ <entry>
+  <title type="text">Let's Try Doing a Blog</title>
+  <link rel="alternate" href="http://graz.fortlogic.net/blog/2020/05/23/let-s-try-doing-a-blog.html?utm_source=meta&amp;utm_medium=Atom" />
+  <id>urn:http-graz-fortlogic-net:-blog-2020-05-23-let-s-try-doing-a-blog-html</id>
+  <published>2020-05-23T19:19:15Z</published>
+  <updated>2020-05-23T19:19:15Z</updated>
+  <author>
+   <name>Graz</name></author>
+  <content type="html">
+&lt;p&gt;I&amp;rsquo;ve been inspired to start my own blog. I don&amp;rsquo;t have a specific theme in mind, rather I&amp;rsquo;ll just be posting about anything I feel like. Given the nature of my interests, I suspect that computer related topics will be the most prominent.&lt;/p&gt;&lt;a href="http://graz.fortlogic.net/blog/2020/05/23/let-s-try-doing-a-blog.html?utm_source=meta&amp;amp;utm_medium=Atom"&gt;&lt;em&gt;More&amp;hellip;&lt;/em&gt;&lt;/a&gt;</content></entry></feed>

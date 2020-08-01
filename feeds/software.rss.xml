@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>Graz's Blog: Posts tagged 'software'</title>
+  <description>Graz's Blog: Posts tagged 'software'</description>
+  <link>http://graz.fortlogic.net/tags/software.html</link>
+  <lastBuildDate>Sun, 21 Jun 2020 09:22:14 UT</lastBuildDate>
+  <pubDate>Sun, 21 Jun 2020 09:22:14 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Bootable, Incremental, External BTRFS Backup</title>
+   <link>http://graz.fortlogic.net/blog/2020/06/21/bootable-incremental-external-btrfs-backup.html?utm_source=software&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-graz-fortlogic-net:-blog-2020-06-21-bootable-incremental-external-btrfs-backup-html</guid>
+   <pubDate>Sun, 21 Jun 2020 09:22:14 UT</pubDate>
+   <author>Graz</author>
+   <description>
+&lt;p&gt;For a while I&amp;rsquo;ve wanted to have a way for making bootable backups of my BTRFS-on-LVM-on-LUKS system to an external drive. There are several programs which use the snapshot system of BTRFS to streamline the process of making backups, but none of them seemed flexible enough. So I went about putting together a little system that&amp;rsquo;s tailored to my personal setup.&lt;/p&gt;&lt;a href="http://graz.fortlogic.net/blog/2020/06/21/bootable-incremental-external-btrfs-backup.html?utm_source=software&amp;amp;utm_medium=RSS"&gt;&lt;em&gt;More&amp;hellip;&lt;/em&gt;&lt;/a&gt;</description></item>
+  <item>
+   <title>Color Scheme Frustration</title>
+   <link>http://graz.fortlogic.net/blog/2020/05/23/color-scheme-frustration.html?utm_source=software&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-graz-fortlogic-net:-blog-2020-05-23-color-scheme-frustration-html</guid>
+   <pubDate>Sun, 24 May 2020 00:23:30 UT</pubDate>
+   <author>Graz</author>
+   <description>
+&lt;p&gt;If you&amp;rsquo;re anything like me, you probably have a massive problem with getting distracted by the urge to tweak the color scheme of your development environment. Whether it&amp;rsquo;s Emacs or Xfce, feeling unsatisfied with my current color scheme or window manager theme is something which has to potential to massively hinder my productivity for several days. Obviously procrastination is something that most of us are susceptible to, to some degree. However, I find this particular manifestation of it to be frustrating in a unique way.&lt;/p&gt;&lt;a href="http://graz.fortlogic.net/blog/2020/05/23/color-scheme-frustration.html?utm_source=software&amp;amp;utm_medium=RSS"&gt;&lt;em&gt;More&amp;hellip;&lt;/em&gt;&lt;/a&gt;</description></item></channel></rss>

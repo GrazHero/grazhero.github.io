@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Bootable, Incremental, External BTRFS Backup</title>
+    <meta name="description" content="For a while I've wanted to have a way for making bootable backups of my BTRFS-on-LVM-on-LUKS system to an external drive. There are several programs which use the snapshot system of BTRFS to streamline the process of making backups, but none of them seeme...">
+    <meta name="author"      content="Graz">
+    <meta name="keywords"    content="software, hardware, unix">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/favicon.ico">
+    <link rel="canonical" href="http://graz.fortlogic.net/blog/2020/06/21/bootable-incremental-external-btrfs-backup.html">
+    <link rel="next" href="/blog/2020/05/23/why-is-it-legal-to-disguise-an-ad-as-an-impartial-review.html">
+    <link rel="prev" href="/blog/2020/07/27/why-i-enjoy-the-yellow-site.html">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/feeds/all.rss.xml" title="RSS Feed">
+    <!-- JS -->
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-167435229-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+
+    <!-- A standard Twitter Bootstrap nav bar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="container">
+
+      <a href="/index.html" class="navbar-brand">Graz's Blog</a>
+
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+              data-target="#navbar_collapse" aria-controls="navbar_collapse"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbar_collapse">
+          <ul class="navbar-nav mr-auto">
+
+
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                Tags <b class="caret"></b>
+              </a>
+
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/tags/ads.html">ads</a><a class="dropdown-item" href="/tags/discussion.html">discussion</a><a class="dropdown-item" href="/tags/hardware.html">hardware</a><a class="dropdown-item" href="/tags/internet.html">internet</a><a class="dropdown-item" href="/tags/meta.html">meta</a><a class="dropdown-item" href="/tags/society.html">society</a><a class="dropdown-item" href="/tags/software.html">software</a><a class="dropdown-item" href="/tags/unix.html">unix</a><a class="dropdown-item" href="/tags/webdev.html">webdev</a>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                Games <b class="caret"></b>
+              </a>
+
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/snake.html">Snake</a>
+              </div>
+            </li>
+
+            <li>
+              <a class="nav-link" href="/About.html">About</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link" href="/feeds/all.atom.xml">Atom</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/feeds/all.rss.xml">RSS</a>
+            </li>
+          </ul>
+      </div>
+
+      </div>
+    </nav>
+
+
+    <div class="container">
+      <div class="row">
+
+        <!-- Main column -->
+        <div id="content" class="col-md-12">
+
+
+
+
+
+          <article>
+  <header>
+    <h1>Bootable, Incremental, External BTRFS Backup</h1>
+    <p class='date-and-tags'>
+<time datetime="2020-06-21" pubdate="true">2020-06-21</time> :: <span class="tags"><a href="/tags/software.html">software</a>, <a href="/tags/hardware.html">hardware</a>, <a href="/tags/unix.html">unix</a></span></p>
+    <p class='authors'>By: <span class="authors">Graz</span></p>
+  </header>
+
+<p>For a while I&rsquo;ve wanted to have a way for making bootable backups of my BTRFS-on-LVM-on-LUKS system to an external drive. There are several programs which use the snapshot system of BTRFS to streamline the process of making backups, but none of them seemed flexible enough. So I went about putting together a little system that&rsquo;s tailored to my personal setup.</p>
+<!-- more-->
+
+<h1 id="setting-things-up">Setting Things Up</h1>
+
+<p>I started by partitioning the external drive identically to my main one. Once I did that, I moved on to bootstrapping the incremental  backup system.</p>
+
+<p>Most of what I did is based on <a href="https://btrfs.wiki.kernel.org/index.php/Incremental_Backup#Doing_it_by_hand.2C_step_by_step">this</a> article, which was very useful.</p>
+
+<p>The bootstrap process in that article left me with a backup subvolume which was readonly. Readonly makes sense for backups, but I really would like the option to boot right in to my backup without any hassle, in case my SSD were to completely fail at an inopportune moment. So I took a read/write snapshot of the backup subvolume, which I&rsquo;ll make bootable later.</p>
+
+<pre><code>$ sudo btrfs sub snap /mnt/backuproot/backup /mnt/backuproot/bootable</code></pre>
+
+<h1 id="making-it-bootable">Making it Bootable</h1>
+
+<p>Obviously several files make reference to the UUIDs of the partitions on my main drive. In order to make the bootable bootable subvolume work, I need to edit a couple files and copy them over.</p>
+
+<p>I started by making a copy of <code>/etc/fstab</code> and replacing any UUID with the corresponding one for the external drive. Then I copied this version over to the bootable subvolume, replacing the version of the file it got from the snapshot earlier. Note that I have to copy it over every time I make a backup, as it will be overwritten by the snapshot.</p>
+
+<p>Then I made a copy of <code>/etc/default/grub</code>, replaced any UUID, and copied it over. Like with <code>fstab</code>, I must repeat this every time I make a backup.</p>
+
+<p>Now that <code>etc/default/grub</code> is in place, it&rsquo;s time to actually install grub to the EFI System Partition of the external drive (simply copying over the grub installation from the main drive won&rsquo;t work).</p>
+
+<p>Before starting that though, I give the bootable subvol its own mount point. For some reason I ran into issues getting GRUB to install in the chroot later unless I did this.</p>
+
+<pre><code>$ sudo mount -t btrfs -o subvol=/bootable /dev/mapper/archimedes--backup-root /mnt/bootable</code></pre>
+
+<p>Now I mount the virtual filesystems.</p>
+
+<pre><code>$ for i in /dev /proc /sys /run; do; sudo mount -o bind $i /mnt/bootable$i; done</code></pre>
+
+<p>If you want a UEFI boot entry for the backup drive, you&rsquo;ll also need efivars to be mounted while you install GRUB.</p>
+
+<p>Mount the external drive&rsquo;s ESP inside the bootable subvol.</p>
+
+<pre><code>$ sudo mount /dev/sdb1 /mnt/bootable/efi</code></pre>
+
+<p>And then chroot into it.</p>
+
+<pre><code>$ sudo chroot /mnt/bootable</code></pre>
+
+<p>From here, there are several things I need to do. First install GRUB. Because my ESP isn&rsquo;t included in the BTRFS snapshots, I only need to perform this step once.</p>
+
+<pre><code># grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUBBACKUP</code></pre>
+
+<p>Then generate the config file. This step must be repeated every time (although that may not be the case on systems where /boot is a separate, non-BTRFS partition, come to think of it).</p>
+
+<pre><code># grub-mkconfig -o /boot/grub/grub.cfg</code></pre>
+
+<p>And lastly I needed to regenerate the initramfs. Linux wasn&rsquo;t able to find any disks unless I did this. This step must be repeated every time as well.</p>
+
+<pre><code># mkinitcpio -P</code></pre>
+
+<p>And there we go. The drive should be bootable now.</p>
+
+<h1 id="keeping-it-bootable">Keeping it Bootable</h1>
+
+<p>You&rsquo;ll want to keep at least two subvolumes on the backup drive: the readonly one which directly mirrors your main filesystem, and the read/write one which has been modified to be bootable. Incremental backups can be done with the method described in the <a href="https://btrfs.wiki.kernel.org/index.php/Incremental_Backup#Doing_it_by_hand.2C_step_by_step">aforementioned article</a>. I decided on just deleting the bootable subvol after the incremental backup has happened, and then creating it again and repeating the necessary steps. This is fine because I only ever intend to boot into this in case of emergency.</p>
+
+<h1 id="something-annoying-to-be-aware-of">Something Annoying to Be Aware of</h1>
+
+<p>If you have SYSTEMD, It&rsquo;s important to realize that it has no qualms about making its own BTRFS subvolumes without telling you. Notably, <code>/var/lib/machines</code> and <code>/var/lib/portables</code> are subvolumes that SyStEmD creates. Although subvolumes in question didn&rsquo;t initially get carried over with the incremental backup, they were created automatically upon booting into the backup drive, and they weren&rsquo;t deleted when the system shut down.</p>
+
+<p>This caused some trouble for me. I&rsquo;d written my script to first delete the bootable subvolume if it exists, but this could no longer happen. <code>btrfs subvolume delete</code> is not recursive, and will fail if there are any subvolumes beneath the one you&rsquo;re operating on. I hadn&rsquo;t bothered accounting for this in my script, because I obviously wasn&rsquo;t expecting there to be a subvolume there.</p>
+
+<p>At any rate, it was at least a pretty easy fix, once I&rsquo;d managed to find any posts on the Internet about it at all. As far as I can tell, Nothing on my system is even using the programs associated with these subvolumes, and the subvolumes aren&rsquo;t actually necessary for them to function. Thanks sYsTeMd.</p>
+
+<pre><code>$ sudo btrfs sub del /var/lib/machines
+$ sudo btrfs sub del /var/lib/portables
+$ sudo mkdir /var/lib/machines /var/lib/portables</code></pre>
+
+<h1 id="my-script">My Script</h1>
+
+<h2 id="dont-use-this-script-its-not-well-made-this-is-purely-for-reference-im-not-responsible-for-your-data-loss">Don&rsquo;t use this script. It&rsquo;s not well made. This is purely for reference. I&rsquo;m not responsible for your data loss.</h2>
+
+<p>If you&rsquo;ve followed the initial bootstrapping instructions <a href="https://btrfs.wiki.kernel.org/index.php/Incremental_Backup#Doing_it_by_hand.2C_step_by_step">here</a> and installed GRUB, this automates the rest. There are a lot of improvements I would like to make, but for now I&rsquo;m just really happy that it works.</p>
+
+<p>I&rsquo;ll post an addendum if it turns out I&rsquo;ve made some horrible mistake, or if I make any notable improvements.</p>
+
+<pre><code>#!/bin/zsh
+
+# backup drive must already be decrypted
+
+BACKUP_BTRFS_UUID=8037eb01-c46c-4a6e-abb7-8d3d55aeedce
+CORRECTED_FSTAB_PATH=/home/tim/backup-system/fstab-backup-drive
+CORRECTED_GRUB_CFG_PATH=/home/tim/backup-system/grub-backup-drive
+ROOT_ROOTVOL_MOUNTPOINT=/mnt/rootvol
+ROOT_SUBVOL_MOUNTPOINT=/mnt/rootvol/root
+BACKUP_ROOTVOL_MOUNTPOINT=/mnt/backuproot
+BACKUP_BOOTABLE_SUBVOL_MOUNTPOINT=/mnt/bootable
+
+if [ $(whoami) != root ]; then
+    echo "This script must be run as root"
+elif ! [ $(ls /dev/disk/by-uuid | grep $BACKUP_BTRFS_UUID) ]; then
+    echo "Can't find BTRFS partition. Has the disk been decrypted?"
+else
+    # start by mounting the backup rootvol
+    mount -t btrfs /dev/disk/by-uuid/$BACKUP_BTRFS_UUID $BACKUP_ROOTVOL_MOUNTPOINT
+
+    # make a new snapshot
+    btrfs sub snap -r $ROOT_SUBVOL_MOUNTPOINT $ROOT_ROOTVOL_MOUNTPOINT/backup-new
+    sync
+
+    # now send the difference between the old and new backup
+    btrfs send -p $ROOT_ROOTVOL_MOUNTPOINT/backup $ROOT_ROOTVOL_MOUNTPOINT/backup-new | btrfs receive $BACKUP_ROOTVOL_MOUNTPOINT
+
+    # Now delete the old snapshots
+    btrfs sub delete $ROOT_ROOTVOL_MOUNTPOINT/backup
+    mv $ROOT_ROOTVOL_MOUNTPOINT/backup-new $ROOT_ROOTVOL_MOUNTPOINT/backup
+    btrfs sub delete $BACKUP_ROOTVOL_MOUNTPOINT/backup
+    mv $BACKUP_ROOTVOL_MOUNTPOINT/backup-new $BACKUP_ROOTVOL_MOUNTPOINT/backup
+
+    # Now make a read/write snapshot of the backup, on the external drive.
+    # This will be the one we can boot into.
+    # First make sure we delete it if it already exists.
+    btrfs sub delete $BACKUP_ROOTVOL_MOUNTPOINT/bootable
+    btrfs sub snap $BACKUP_ROOTVOL_MOUNTPOINT/backup $BACKUP_ROOTVOL_MOUNTPOINT/bootable
+
+    # Mount it. This is going to be the bootable subvol.
+    mount -t btrfs -o subvol=/bootable /dev/disk/by-uuid/$BACKUP_BTRFS_UUID $BACKUP_BOOTABLE_SUBVOL_MOUNTPOINT
+
+    # We need to have edited copies of /etc/fstab and /etc/default/grub, such that
+    # any UUIDs of the main drive are changed to those of the external one.
+    # We copy them over to the bootable subvol on the external drive.
+    cp $CORRECTED_FSTAB_PATH $BACKUP_BOOTABLE_SUBVOL_MOUNTPOINT/etc/fstab
+    cp $CORRECTED_GRUB_CFG_PATH $BACKUP_BOOTABLE_SUBVOL_MOUNTPOINT/etc/default/grub
+
+    # Mount virtual filesystems in preparation for chroot
+    for i in /dev /proc /sys /run; do
+    	mount -o bind $i $BACKUP_BOOTABLE_SUBVOL_MOUNTPOINT$i
+    done
+
+    # Chroot to generate grub config and initrd for the bootable subvol.
+    chroot $BACKUP_BOOTABLE_SUBVOL_MOUNTPOINT zsh -c "grub-mkconfig -o /boot/grub/grub.cfg; mkinitcpio -P"
+
+    # unmount virtual filesystems
+    for i in /dev /proc /sys /run; do
+    	umount $BACKUP_BOOTABLE_SUBVOL_MOUNTPOINT$i
+    done
+fi</code></pre>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://graz.fortlogic.net/blog/2020/06/21/bootable-incremental-external-btrfs-backup.html"
+       data-dnt="true">
+      "Tweet"</a>
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.identifier = undefined;
+        this.page.url = undefined;
+        this.page.title = undefined;
+        this.page.category_id = undefined;
+      };
+      var disqus_shortname = 'graz-fortlogic-net';
+      (function() {
+          var dsq = document.createElement('script');
+          dsq.type = 'text/javascript';
+          dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.setAttribute('data-timestamp', +new Date());
+          (document.head || document.body).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+      Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+    <div class="row justify-content-center">
+      <nav aria-label="Page Navigation">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="/blog/2020/05/23/why-is-it-legal-to-disguise-an-ad-as-an-impartial-review.html"
+               aria-label="Previous">
+              <span aria-hidden="true">&larr; Why is it Legal to Disguise an Ad as an Impartial Review?</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="/blog/2020/07/27/why-i-enjoy-the-yellow-site.html"
+               aria-label="Next">
+              <span aria-hidden="true">Why I Enjoy the Yellow Site &rarr;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+</article>
+        </div>
+      </div>
+      <footer>
+        <hr />
+        <p>Site generated
+        by <a href="https://github.com/greghendershott/frog">Frog</a>,
+        the <strong>fr</strong>ozen bl<strong>og</strong> tool.</p>
+        <p>Using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+      </footer>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="/js/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
